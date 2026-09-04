@@ -2,6 +2,7 @@
 
 ## Опис завдання
 
+https://docs.google.com/document/d/1XzC6iSXtoFNWJKlndmdaPPP-j4MMY0CIdSbD6anxgSE/edit?tab=t.0#heading=h.wy5orslc7da4
 
 ## Встановлення
 
@@ -16,12 +17,3 @@
 9. Запустіть команду `php artisan l5-swagger:generate`
 
 Тепер ви можете відвідати інтерфейс користувача Swagger за адресою http://127.0.0.1:8080/api/documentation
-
-
-
-
-
-
-
-
-

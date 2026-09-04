@@ -7,7 +7,7 @@ use OpenApi\Attributes as OA;
 
 #[
     OA\Server(
-        url: '/api/v1',
+        url: '/api',
         description: 'REST API'
     ),
     OA\Info(
