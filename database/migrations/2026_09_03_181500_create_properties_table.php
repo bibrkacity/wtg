@@ -12,7 +12,7 @@ return new class () extends Migration {
     {
         Schema::create('properties', function (Blueprint $table) {
             $table->id();
-            $table->string('external_code', 20)->unique();
+            $table->string('code', 20)->unique();
             $table->foreignId('supplier_id')->constrained()->cascadeOnDelete();
             $table->string('name', 100);
             $table->string('city', 80)->index();

@@ -13,7 +13,7 @@ class Supplier extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'title',
+        'name',
         'email',
         'phone',
         'telegram',

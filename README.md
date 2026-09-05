@@ -11,9 +11,12 @@ https://docs.google.com/document/d/1XzC6iSXtoFNWJKlndmdaPPP-j4MMY0CIdSbD6anxgSE/
 3. Скопіюйте `.env.example` to `.env`
 4. Запустіть команду `composer install`
 5. Запустіть команду `./vendor/bin/sail build --no-cache` 
-6. Запустіть команду `./vendor/bin/sail up`
-7. Запустіть команду `./vendor/bin/sail artisan migrate`
-8. Запустіть команду `./vendor/bin/sail artisan db:seed`
-9. Запустіть команду `php artisan l5-swagger:generate`
+6. Запустіть команду `./vendor/bin/sail artisan migrate`
+7. Запустіть команду `./vendor/bin/sail artisan db:seed`
+8. Запустіть команду `php artisan l5-swagger:generate`
+
+## Запуск
+1. Запустіть команду `./vendor/bin/sail up`
+2. Запустіть команду `./vendor/bin/sail artisan queue:work`
 
 Тепер ви можете відвідати інтерфейс користувача Swagger за адресою http://127.0.0.1:8080/api/documentation

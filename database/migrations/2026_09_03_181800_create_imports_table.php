@@ -12,9 +12,10 @@ return new class () extends Migration {
     {
         Schema::create('imports', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('supplier_id')->constrained()->cascadeOnDelete();
             $table->string('external_import_id', 50);
             $table->datetime('sent_at');
-            $table->string('status')->default('started');
+            $table->string('status')->default('pending');
             $table->unsignedInteger('total_offers');
             $table->unsignedInteger('processed_offers')->default(0);
             $table->text('error')->nullable();

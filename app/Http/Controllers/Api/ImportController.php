@@ -3,11 +3,16 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\FormRequests\ImportStoreFormRequest;
+use App\Services\ImportService;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use OpenApi\Attributes as OA;
+use Illuminate\Http\JsonResponse;
 
 class ImportController extends ApiController
 {
+    public function __construct(private readonly ImportService $importService)
+    {
+    }
     #[OA\Post(
         path: '/imports',
         description: 'Get offers of suppliers',
@@ -75,8 +80,10 @@ class ImportController extends ApiController
             new OA\Response(response: ResponseAlias::HTTP_OK, description: 'List of users by filters'),
         ]
     )]
-    public function store(ImportStoreFormRequest  $request)
+    public function store(ImportStoreFormRequest  $request): JsonResponse
     {
-        return response()->json(['test' => 'Ok']);
+        $data = $request->validated();
+        $this->importService->import($data);
+        return response()->json(['message' => 'Import started, it may take some time'], ResponseAlias::HTTP_ACCEPTED);
     }
 }

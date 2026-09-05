@@ -9,7 +9,7 @@ class ImportStoreFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "supplier" => "required|string",
+            "supplier" => "required|string|exists:suppliers,name",
             "external_import_id" => "required|string",
             "sent_at" => "required|date",
             "offers" => "required|array",

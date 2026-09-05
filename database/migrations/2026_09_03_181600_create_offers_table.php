@@ -22,6 +22,7 @@ return new class () extends Migration {
             $table->string('currency', 3)->default('EUR')->index();
             $table->unsignedInteger('available_units');
             $table->datetime('expires_at')->nullable();
+            $table->unique(['supplier_id', 'external_id']);
             $table->timestamps();
         });
 

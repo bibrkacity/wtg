@@ -13,7 +13,7 @@ class Property extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'external_code',
+        'code',
         'supplier_id',
         'name',
         'city',
