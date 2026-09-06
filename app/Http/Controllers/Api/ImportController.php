@@ -78,7 +78,17 @@ class ImportController extends ApiController
         ),
         tags: ['Imports'],
         responses: [
-            new OA\Response(response: ResponseAlias::HTTP_OK, description: 'List of users by filters'),
+            new OA\Response(
+                response: ResponseAlias::HTTP_ACCEPTED,
+                description: 'Id and status of the import',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'id', type: 'integer', example: 1),
+                        new OA\Property(property: 'status', type: 'string', example: 'pending', enum: ['pending', 'processing', 'completed', 'failed']),
+                    ],
+                    type: 'object',
+                ),
+            ),
         ]
     )]
     public function store(ImportStoreFormRequest  $request): JsonResponse
