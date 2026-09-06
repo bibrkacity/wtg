@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\FormRequests\ImportStoreFormRequest;
+use App\Models\Import;
 use App\Services\ImportService;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use OpenApi\Attributes as OA;
@@ -83,7 +84,62 @@ class ImportController extends ApiController
     public function store(ImportStoreFormRequest  $request): JsonResponse
     {
         $data = $request->validated();
-        $this->importService->import($data);
-        return response()->json(['message' => 'Import started, it may take some time'], ResponseAlias::HTTP_ACCEPTED);
+        $import = $this->importService->import($data);
+        return response()->json(
+            [
+                'id' => $import->id,
+                'status' => $import->status
+            ],
+            ResponseAlias::HTTP_ACCEPTED
+        );
     }
+
+    #[OA\Get(
+        path: '/imports/{id}',
+        description: 'Get details of a specific import',
+        summary: 'Get import details',
+        tags: ['Imports'],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                description: 'Import ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer', example: 1)
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: ResponseAlias::HTTP_OK,
+                description: 'Import details',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: 'data',
+                            properties: [
+                                new OA\Property(property: 'id', type: 'integer', example: 1),
+                                new OA\Property(property: 'supplier_id', type: 'integer', example: 1),
+                                new OA\Property(property: 'external_import_id', type: 'string', example: 'import-12345'),
+                                new OA\Property(property: 'sent_at', type: 'string', format: 'date-time', example: '2026-09-04T12:00:00Z'),
+                                new OA\Property(property: 'status', type: 'string', example: 'completed', enum: ['pending', 'processing', 'completed', 'failed']),
+                                new OA\Property(property: 'total_offers', type: 'integer', example: 10),
+                                new OA\Property(property: 'processed_offers', type: 'integer', example: 10),
+                                new OA\Property(property: 'error', type: 'string', example: null, nullable: true),
+                                new OA\Property(property: 'created_at', type: 'string', format: 'date-time', example: '2026-09-04T12:00:00Z'),
+                                new OA\Property(property: 'updated_at', type: 'string', format: 'date-time', example: '2026-09-04T12:30:00Z'),
+                            ],
+                            type: 'object',
+                        ),
+                    ],
+                    type: 'object',
+                ),
+            ),
+            new OA\Response(response: ResponseAlias::HTTP_NOT_FOUND, description: 'Import not found'),
+        ]
+    )]
+    public function show(Import $import): JsonResponse
+    {
+        return response()->json(['data' => $import->toShowArray()]);
+    }
+
 }

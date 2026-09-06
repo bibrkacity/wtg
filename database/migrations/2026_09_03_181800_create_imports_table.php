@@ -20,6 +20,7 @@ return new class () extends Migration {
             $table->unsignedInteger('processed_offers')->default(0);
             $table->text('error')->nullable();
             $table->datetime('completed_at')->nullable();
+            $table->index(['supplier_id', 'external_import_id']);
             $table->timestamps();
         });
 

@@ -12,7 +12,7 @@ use Throwable;
 
 class ImportService implements ShouldQueue
 {
-    public function import(array $data): void
+    public function import(array $data): Import
     {
         $import = $this->createImport($data);
 
@@ -24,17 +24,18 @@ class ImportService implements ShouldQueue
             $import->error = 'Import already done';
             $import->status = 'failed';
             $import->save();
-            return;
-        }
-        $i = 0;
-        foreach ($data['offers'] as $offer) {
-            if ($i === 0) {
-                $import->status = 'processing';
-                $import->save();
-            }
-            ImportOfferJob::dispatch($offer, $import, $i++);
-        }
 
+        } else {
+            $i = 0;
+            foreach ($data['offers'] as $offer) {
+                if ($i === 0) {
+                    $import->status = 'processing';
+                    $import->save();
+                }
+                ImportOfferJob::dispatch($offer, $import, $i++);
+            }
+        }
+        return $import;
     }
 
     public function importOneOffer(array $offer, Import $import, int $i): void
@@ -64,8 +65,9 @@ class ImportService implements ShouldQueue
         } catch (Throwable $e) {
             $import->error .= "Error in offer with external_id={$offer['external_id']}: {$e->getMessage()}";
         } finally {
-            if (++$i === $import->total_offers) {
+            if (++$i == $import->total_offers) {
                 $import->status = 'completed';
+                $import->completed_at = now();
             }
             $import->save();
         }
