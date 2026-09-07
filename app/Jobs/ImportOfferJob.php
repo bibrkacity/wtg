@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Import;
-use App\Services\ImportService;
+use App\Exceptions\ImportService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 
