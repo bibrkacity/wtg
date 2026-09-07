@@ -27,7 +27,7 @@ class PropertyIndexFormRequest extends FormRequest
     {
         $this->mergeIfMissing([
             'page' => 1,
-            'per_page' => 20,
+            'per_page' => config('app.default_per_page'),
         ]);
     }
 }

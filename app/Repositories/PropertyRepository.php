@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class PropertyRepository
 {
@@ -13,7 +12,6 @@ class PropertyRepository
     {
         $this->sql = $this->createSqlQuery($filters);
         return [
-            'filters' => $filters,
             'total' => $this->totalCount(),
             'data' => $this->pageData($filters),
         ];
@@ -27,8 +25,6 @@ class PropertyRepository
     public function totalCount(): int
     {
         $sql = preg_replace('/SELECT(.|\n)+?FROM properties/', 'SELECT COUNT(properties.id) n FROM properties', $this->sql);
-
-        Log::debug($sql);
 
         $result = DB::select($sql);
         return $result[0]->n;
@@ -44,7 +40,7 @@ class PropertyRepository
 
         $sql = "
     SELECT
-        properties.*,
+        properties.id, properties.name, properties.code, properties.city,
         suppliers.name AS supplier_name,
         offers.id AS offer_id,
         offers.price AS offer_price,

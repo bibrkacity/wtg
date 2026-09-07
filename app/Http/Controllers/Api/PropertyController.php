@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\FormRequests\PropertyIndexFormRequest;
+use App\Http\FormResponses\IndexResponse;
 use App\Repositories\PropertyRepository;
 use OpenApi\Attributes as OA;
-use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class PropertyController extends Controller
@@ -89,10 +89,10 @@ class PropertyController extends Controller
             ),
         ]
     )]
-    public function index(PropertyIndexFormRequest $request): JsonResponse
+    public function index(PropertyIndexFormRequest $request): IndexResponse
     {
         $filters = $request->validated();
-        $data = $this->propertyRepository->ApiResponseData($filters);
-        return response()->json($data);
+        $ApiResponseData = $this->propertyRepository->ApiResponseData($filters);
+        return new IndexResponse($ApiResponseData['data'], $filters, $ApiResponseData['total']);
     }
 }
