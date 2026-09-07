@@ -1,9 +1,9 @@
 <?php
 
 
-use App\Exceptions\ImportController;
-use App\Exceptions\OfferController;
-use App\Exceptions\PropertyController;
+use App\Http\Controllers\Api\ImportController;
+use App\Http\Controllers\Api\OfferController;
+use App\Http\Controllers\Api\PropertyController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/imports', [ImportController::class, 'store'])->name('imports');

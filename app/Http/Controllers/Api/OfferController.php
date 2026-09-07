@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Exceptions\OfferLockedException;
 use App\Http\FormRequests\ReservationStoreFormRequest;
 use App\Models\Offer;
+use App\Services\ReservationService;
 use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Illuminate\Http\JsonResponse;
@@ -16,7 +17,7 @@ class OfferController extends ApiController
     }
 
     /**
-     * @throws OfferLockedException
+     * @throws OfferLockedException|\App\Exceptions\OfferException
      */
     public function reservation(ReservationStoreFormRequest $request, Offer $offer): JsonResponse
     {
