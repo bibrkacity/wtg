@@ -8,6 +8,6 @@ class OfferLockedException extends ApiException
 {
     public function __construct()
     {
-        parent::__construct('Offer is not available anymore', ResponseAlias::HTTP_CONFLICT);
+        parent::__construct('Wait for another user to release the lock', ResponseAlias::HTTP_LOCKED);
     }
 }

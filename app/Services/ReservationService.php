@@ -9,7 +9,10 @@ use Exception;
 
 class ReservationService
 {
-    public function createReservation(Offer $offer, array $data): Reservation
+    /**
+     * @throws OfferException
+     */
+    public function createReservation(Offer $offer, array $data): ?Reservation
     {
         if ($offer->available_units == 0) {
             throw new OfferException();

@@ -20,8 +20,6 @@ return new class () extends Migration {
             $table->timestamps();
         });
 
-        DB::statement('ALTER TABLE reservations ADD UNIQUE INDEX idempotent (offer_id, (IF(is_active=0, updated_at, 1)))');
-
     }
 
     /**

@@ -16,5 +16,5 @@ Route::controller(PropertyController::class)->group(function () {
 });
 
 Route::controller(OfferController::class)->group(function () {
-    Route::post('/offers/{offer}/reservations', 'reservation')->name('offers.reservation');
+    Route::post('/offers/{offer}/reservation', 'reservation')->name('offers.reservation');
 });
