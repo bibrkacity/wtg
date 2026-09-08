@@ -12,7 +12,9 @@ https://docs.google.com/document/d/1XzC6iSXtoFNWJKlndmdaPPP-j4MMY0CIdSbD6anxgSE/
 4. Запустіть команду `composer install`
 5. Запустіть команду `./vendor/bin/sail build --no-cache` 
 6. Запустіть команду `./vendor/bin/sail artisan migrate`
+7. Запустіть команду `./vendor/bin/sail artisan migrate --database=mysql_testing`
 7. Запустіть команду `./vendor/bin/sail artisan db:seed`
+8. Запустіть команду `./vendor/bin/sail artisan db:seed --database=mysql_testing`
 8. Запустіть команду `php artisan l5-swagger:generate`
 
 ## Запуск

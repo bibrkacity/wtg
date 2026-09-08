@@ -28,7 +28,7 @@ class ImportController extends ApiController
                     'offers',
                 ],
                 properties: [
-                    new OA\Property(property: 'supplier', type: 'string', example: 'supplier-code'),
+                    new OA\Property(property: 'supplier', type: 'string', example: 'supplier-a'),
                     new OA\Property(property: 'external_import_id', type: 'string', example: 'import-12345'),
                     new OA\Property(property: 'sent_at', type: 'string', format: 'date-time', example: '2026-09-04T12:00:00Z'),
                     new OA\Property(
@@ -93,12 +93,14 @@ class ImportController extends ApiController
     )]
     public function store(ImportStoreFormRequest  $request): JsonResponse
     {
+
         $data = $request->validated();
         $import = $this->importService->import($data);
         return response()->json(
-            [
+            [ 'data' => [
                 'id' => $import->id,
                 'status' => $import->status
+                ]
             ],
             ResponseAlias::HTTP_ACCEPTED
         );
