@@ -96,14 +96,19 @@ class ImportController extends ApiController
 
         $data = $request->validated();
         $import = $this->importService->import($data);
-        return response()->json(
-            [ 'data' => [
-                'id' => $import->id,
-                'status' => $import->status
+        if ($import) {
+            return response()->json(
+                [ 'data' => [
+                    'id' => $import->id,
+                    'status' => $import->status
                 ]
-            ],
-            ResponseAlias::HTTP_ACCEPTED
-        );
+                ],
+                ResponseAlias::HTTP_ACCEPTED
+            );
+        } else {
+            return response()->json(['error' => 'Failed to import'], ResponseAlias::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     #[OA\Get(
