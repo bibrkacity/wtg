@@ -16,22 +16,9 @@ class ImportService implements ShouldQueue
     {
         $import = $this->createImport($data);
 
-        $count = Import::query()
-            ->where('supplier_id', $import->supplier_id)
-            ->where('external_import_id', $import->external_import_id)
-            ->count();
-        if ($count > 1) {
-            $import->error = 'Import already done';
-            $import->status = 'failed';
-            $import->save();
-
-        } else {
+        if ($import) {
             $i = 0;
             foreach ($data['offers'] as $offer) {
-                if ($i === 0) {
-                    $import->status = 'processing';
-                    $import->save();
-                }
                 ImportOfferJob::dispatch($offer, $import, $i++);
             }
         }
@@ -41,6 +28,12 @@ class ImportService implements ShouldQueue
     public function importOneOffer(array $offer, Import $import, int $i): void
     {
         try {
+
+            if ($i === 0) {
+                $import->status = 'processing';
+                $import->save();
+            }
+
             $property = $this->getProperty($offer['property'], $import);
 
             $offer = Offer::updateOrCreate(
@@ -60,20 +53,22 @@ class ImportService implements ShouldQueue
                 ]
             );
 
-            $import->processed_offers++;
+            $import->refresh();
+            $import->increment('processed_offers');
 
         } catch (Throwable $e) {
             $import->error .= "Error in offer with external_id={$offer['external_id']}: {$e->getMessage()}";
+            $import->save();
         } finally {
             if (++$i == $import->total_offers) {
                 $import->status = 'completed';
                 $import->completed_at = now();
+                $import->save();
             }
-            $import->save();
         }
     }
 
-    private function createImport(array $data): Import
+    private function createImport(array $data): ?Import
     {
         $import = new Import();
 
@@ -87,7 +82,12 @@ class ImportService implements ShouldQueue
         $import->status = 'pending';
         $import->total_offers = count($data['offers']);
         $import->processed_offers = 0;
-        $import->save();
+        try {
+            $import->save();
+        } catch (Throwable $e) {
+            $import = null;
+        }
+
         return $import;
     }
 

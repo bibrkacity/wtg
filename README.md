@@ -2,7 +2,7 @@
 
 ## Опис завдання
 
-https://docs.google.com/document/d/1XzC6iSXtoFNWJKlndmdaPPP-j4MMY0CIdSbD6anxgSE/edit?tab=t.0#heading=h.wy5orslc7da4
+[File in PDF format.](./resources/task.pdf)
 
 ## Встановлення
 
